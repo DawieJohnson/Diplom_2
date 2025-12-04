@@ -1,0 +1,16 @@
+{
+  "categories": [
+    {
+      "name": "Проваленные тесты",
+      "matchedStatuses": ["failed"]
+    },
+    {
+      "name": "Пропущенные тесты",
+      "matchedStatuses": ["skipped"]
+    },
+    {
+      "name": "Успешные тесты",
+      "matchedStatuses": ["passed"]
+    }
+  ]
+}
