@@ -1,15 +1,12 @@
 package ru.stellarburgers.utils;
 
 import ru.stellarburgers.api.models.User;
+import com.github.javafaker.Faker;
+import java.util.Locale;
 import java.util.UUID;
 
 public class UserGenerator {
-
-    // Константы для генерации тестовых данных
-    private static final String EMAIL_PREFIX = "test-";
-    private static final String EMAIL_DOMAIN = "@example.com";
-    private static final String NAME_PREFIX = "User_";
-    private static final String PASSWORD_PREFIX = "Pass";
+    private static final Faker faker = new Faker(new Locale("ru"));
     private static final String PASSWORD_SUFFIX = "!";
 
     // Приватный конструктор для утилитного класса
@@ -18,10 +15,9 @@ public class UserGenerator {
     }
 
     public static User getRandomUser() {
-        String uuid = UUID.randomUUID().toString();
-        String randomEmail = EMAIL_PREFIX + uuid + EMAIL_DOMAIN;
-        String randomName = NAME_PREFIX + uuid.substring(0, 8);
-        String password = PASSWORD_PREFIX + UUID.randomUUID().toString().replace("-", "").substring(0, 8) + PASSWORD_SUFFIX;
+        String randomEmail = faker.internet().emailAddress();
+        String randomName = faker.name().firstName() + " " + faker.name().lastName();
+        String password = faker.internet().password(8, 12, true, true) + PASSWORD_SUFFIX;
 
         return new User(randomEmail, password, randomName);
     }

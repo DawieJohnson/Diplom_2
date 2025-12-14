@@ -3,6 +3,7 @@ package ru.stellarburgers.api.clients;
 import ru.stellarburgers.api.models.User;
 import ru.stellarburgers.api.models.LoginRequest;
 import ru.stellarburgers.api.ApiConstants;
+import io.qameta.allure.Step;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
@@ -11,6 +12,7 @@ import static io.restassured.RestAssured.given;
 
 public class UserClient extends BaseClient {
 
+    @Step("Создание пользователя")
     public io.restassured.response.Response createUser(User user) {
         // ДОБАВЛЕНО: логирование предупреждения при невалидных данных
         if (!user.isValid()) {
@@ -35,6 +37,7 @@ public class UserClient extends BaseClient {
                 .response();
     }
 
+    @Step("Авторизация пользователя")
     public io.restassured.response.Response login(String email, String password) {
         // ДОБАВЛЕНО: логирование перед логином
         System.out.println("🔐 Попытка авторизации для email: " + email);
@@ -60,6 +63,7 @@ public class UserClient extends BaseClient {
                 .response();
     }
 
+    @Step("Получение данных пользователя")
     public io.restassured.response.Response getUserData(String accessToken) {
         // ДОБАВЛЕНО: логирование
         if (accessToken == null || accessToken.isEmpty()) {
@@ -80,6 +84,7 @@ public class UserClient extends BaseClient {
                 .response();
     }
 
+    @Step("Удаление пользователя")
     public io.restassured.response.Response deleteUser(String accessToken) {
         // ДОБАВЛЕНО: логирование
         System.out.println("🗑️  Удаление пользователя...");

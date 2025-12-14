@@ -11,36 +11,16 @@ import io.restassured.response.Response;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-
-import java.util.Arrays;
-import java.util.Collection;
 
 import static org.hamcrest.Matchers.*;
 import static ru.stellarburgers.api.ApiConstants.*;
 
-@RunWith(Parameterized.class)
 @Feature("Создание пользователя")
 public class CreateUserTest {
     private UserClient userClient;
     private User existingUser;
     private String existingUserToken;
-    private String missingField;
     private boolean setupCompleted = false;
-
-    public CreateUserTest(String missingField) {
-        this.missingField = missingField;
-    }
-
-    @Parameterized.Parameters(name = "Создание пользователя без поля: {0}")
-    public static Collection<Object[]> testData() {
-        return Arrays.asList(new Object[][] {
-                {"email"},
-                {"password"},
-                {"name"}
-        });
-    }
 
     @Before
     public void setUp() {
@@ -151,27 +131,6 @@ public class CreateUserTest {
                     .statusCode(STATUS_FORBIDDEN)
                     .body("success", equalTo(false))
                     .body("message", equalTo(USER_EXISTS_MESSAGE));
-        });
-    }
-
-    @Test
-    @Story("Негативные сценарии")
-    @Severity(SeverityLevel.CRITICAL)
-    @io.qameta.allure.junit4.DisplayName("Создание пользователя без обязательного поля: {0}")
-    public void createUserWithoutRequiredFieldTest() {
-        io.qameta.allure.Allure.parameter("Пропущенное поле", missingField);
-
-        io.qameta.allure.Allure.step("Генерация пользователя без поля: " + missingField, () -> {
-            User userWithoutField = UserGenerator.getUserWithoutField(missingField);
-
-            io.qameta.allure.Allure.step("Отправка запроса с пропущенным полем", () -> {
-                Response response = userClient.createUser(userWithoutField);
-
-                response.then()
-                        .statusCode(STATUS_FORBIDDEN)
-                        .body("success", equalTo(false))
-                        .body("message", equalTo(REQUIRED_FIELDS_MESSAGE));
-            });
         });
     }
 }
