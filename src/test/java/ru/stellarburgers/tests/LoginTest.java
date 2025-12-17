@@ -77,8 +77,8 @@ public class LoginTest {
     @Test
     @Story("Негативные сценарии")
     @Severity(SeverityLevel.CRITICAL)
-    @io.qameta.allure.junit4.DisplayName("Авторизация с неверными логином и паролем")
-    public void loginWithInvalidCredentialsTest() {
+    @io.qameta.allure.junit4.DisplayName("Авторизация с неверным паролем")
+    public void loginWithInvalidPasswordTest() {
         io.qameta.allure.Allure.step("Попытка авторизации с неверным паролем", () -> {
             String wrongPassword = "wrongPassword123";
             Response wrongPasswordResponse = userClient.login(userEmail, wrongPassword);
@@ -88,7 +88,13 @@ public class LoginTest {
                     .body("success", equalTo(false))
                     .body("message", equalTo(INVALID_CREDENTIALS_MESSAGE));
         });
+    }
 
+    @Test
+    @Story("Негативные сценарии")
+    @Severity(SeverityLevel.CRITICAL)
+    @io.qameta.allure.junit4.DisplayName("Авторизация с неверным email")
+    public void loginWithInvalidEmailTest() {
         io.qameta.allure.Allure.step("Попытка авторизации с неверным email", () -> {
             String wrongEmail = "nonexistent@test.com";
             Response wrongEmailResponse = userClient.login(wrongEmail, userPassword);
